@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SourcesScreen from './src/screens/SourcesScreen';
+import SourceDetailsScreen from './src/screens/SourceDetails'
 import NewsScreen from './src/screens/NewsScreen';
 
 
@@ -46,7 +47,7 @@ function SourceStackScreen() {
   return (
     <SourcesStack.Navigator>
       <SourcesStack.Screen name="Home" component={SourcesScreen} />
-      <SourcesStack.Screen name="Details" component={DetailsScreen} />
+      <SourcesStack.Screen name="Details" component={SourceDetailsScreen} />
     </SourcesStack.Navigator>
   );
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import { getNews } from '../services/network/NewsApi';
 import Article from '../services/models/Article';
 
 export default class App extends React.Component {
@@ -10,22 +9,14 @@ export default class App extends React.Component {
         articles: [], 
         refreshing: true, 
         loading: false, 
-        isLsitEnd: false,
+        isListEnd: false,
         fetching_from_server: false, 
         page: 1 };
-    this.fetchNews = this.fetchNews.bind(this);
   }
 
   componentDidMount() {
-    // this.fetchNews();
     this.loadMoreData();
    }
-
-  fetchNews() {
-    getNews(this.state.page)
-      .then(articles => this.setState({ articles, refreshing: false }))
-      .catch(() => this.setState({ refreshing: false }));
-  }
 
    loadMoreData = () => {
     let querry = 'Sevastopol'
@@ -59,7 +50,7 @@ export default class App extends React.Component {
   handleRefresh() {
     this.setState(
       {articles: [], refreshing: true},
-      () => this.fetchNews()
+      () => this.loadMoreData()
     );
   }
 
