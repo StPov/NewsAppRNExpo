@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, Linking, TouchableOpacity } from 'react-native';
-import { Text, Card, Divider } from 'react-native-elements';
-import moment from 'moment';
+import React from "react";
+import { View, Linking, TouchableOpacity, Alert } from "react-native";
+import { Text, Card, Divider } from "react-native-elements";
+import moment from "moment";
 
 export default class Article extends React.Component {
   render() {
@@ -11,31 +11,52 @@ export default class Article extends React.Component {
       publishedAt,
       source,
       urlToImage,
-      url
+      url,
     } = this.props.article;
     const { noteStyle, featuredTitleStyle } = styles;
     const time = moment(publishedAt || moment.now()).fromNow();
     const defaultImg =
-      'https://wallpaper.wiki/wp-content/uploads/2017/04/wallpaper.wiki-Images-HD-Diamond-Pattern-PIC-WPB009691.jpg';
+      "https://wallpaper.wiki/wp-content/uploads/2017/04/wallpaper.wiki-Images-HD-Diamond-Pattern-PIC-WPB009691.jpg";
 
     return (
       <TouchableOpacity
         useForeground
         onPress={() => Linking.openURL(url)}
+        onLongPress={() => {
+          Alert.alert(
+            "Сохранить новость?",
+            "",
+            [
+              {
+                text: "Сохранить",
+                onPress: () =>
+                  console.log(
+                    "Новость сохранена. Просмотр ее возможен в 'избранном'"
+                  ),
+              },
+              {
+                text: "Отмена",
+                onPress: () => console.log("Нажата отмена"),
+                style: "cancel",
+              },
+            ],
+            { cancelable: false }
+          );
+        }}
       >
         <Card
           featuredTitle={title}
           featuredTitleStyle={featuredTitleStyle}
           image={{
-            uri: urlToImage || defaultImg
+            uri: urlToImage || defaultImg,
           }}
         >
           <Text style={{ marginBottom: 10 }}>
-            {description || 'Read More..'}
+            {description || "Read More.."}
           </Text>
-          <Divider style={{ backgroundColor: '#dfe6e9' }} />
+          <Divider style={{ backgroundColor: "#dfe6e9" }} />
           <View
-            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text style={noteStyle}>{source.name.toUpperCase()}</Text>
             <Text style={noteStyle}>{time}</Text>
@@ -49,14 +70,14 @@ export default class Article extends React.Component {
 const styles = {
   noteStyle: {
     margin: 5,
-    fontStyle: 'italic',
-    color: '#b2bec3',
-    fontSize: 10
+    fontStyle: "italic",
+    color: "#b2bec3",
+    fontSize: 10,
   },
   featuredTitleStyle: {
     marginHorizontal: 5,
-    textShadowColor: '#00000f',
+    textShadowColor: "#00000f",
     textShadowOffset: { width: 3, height: 3 },
-    textShadowRadius: 3
-  }
+    textShadowRadius: 3,
+  },
 };

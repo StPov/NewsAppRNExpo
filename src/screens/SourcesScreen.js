@@ -54,7 +54,7 @@ export default class SourcesScreen extends Component {
             {channels.map((channel, index) => (
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate("Details", {
+                  navigation.navigate("SourceDetails", {
                     source: channel
                   })
                 }

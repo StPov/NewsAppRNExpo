@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SourcesScreen from './src/screens/SourcesScreen';
 import SourceDetailsScreen from './src/screens/SourceDetails'
 import NewsScreen from './src/screens/NewsScreen';
+import SavesScreen from './src/screens/SavesScreen';
 
 
 function DetailsScreen() {
@@ -46,8 +47,8 @@ const SourcesStack = createStackNavigator();
 function SourceStackScreen() {
   return (
     <SourcesStack.Navigator>
-      <SourcesStack.Screen name="Home" component={SourcesScreen} />
-      <SourcesStack.Screen name="Details" component={SourceDetailsScreen} />
+      <SourcesStack.Screen name="Sources" component={SourcesScreen} />
+      <SourcesStack.Screen name="SourceDetails" component={SourceDetailsScreen} />
     </SourcesStack.Navigator>
   );
 }
@@ -57,8 +58,18 @@ const NewsStack = createStackNavigator();
 function NewsStackScreen() {
   return (
     <NewsStack.Navigator>
-      <NewsStack.Screen name="Home" component={NewsScreen} />
+      <NewsStack.Screen name="News" component={NewsScreen} />
     </NewsStack.Navigator>
+  );
+}
+
+const SavesStack = createStackNavigator();
+
+function SavesStackScreen() {
+  return (
+    <SavesStack.Navigator>
+      <SavesStack.Screen name="News" component={SavesScreen} />
+    </SavesStack.Navigator>
   );
 }
 
@@ -72,12 +83,14 @@ export default function App() {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
-            if (route.name === 'Home') {
+            if (route.name === 'Sources') {
               iconName = focused
-                ? 'ios-information-circle'
-                : 'ios-information-circle-outline';
-            } else if (route.name === 'Settings') {
-              iconName = focused ? 'ios-list-box' : 'ios-list';
+                ? 'ios-book'
+                : 'ios-book';
+            } else if (route.name === 'News') {
+              iconName = focused ? 'ios-paper' : 'ios-paper';
+            } else if (route.name === 'Saves') {
+              iconName = focused ? 'ios-bookmark' : 'ios-bookmark';
             }
 
             // You can return any component that you like here!
@@ -90,8 +103,9 @@ export default function App() {
         }}
       >
 
-        <Tab.Screen name="Home" component={SourceStackScreen} />
-        <Tab.Screen name="Settings" component={NewsStackScreen} />
+        <Tab.Screen name="Sources" component={SourceStackScreen} />
+        <Tab.Screen name="News" component={NewsStackScreen} />
+        <Tab.Screen name="Saves" component={SavesStackScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );

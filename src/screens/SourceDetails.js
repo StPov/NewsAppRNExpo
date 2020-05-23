@@ -57,7 +57,7 @@ const MyCarousel = ({ route}) => {
             setIsListEnd(false);
             fetch(`https://newsapi.org/v2/everything?apiKey=${key}&page=${page}&sources=${source.id}`)
             .then(response => response.json())
-            .then(async function(responseJson) {
+            .then(responseJson => {
                 if (responseJson.articles.length > 0) {
                 setPage(page + 1);
                 setArticles([...articles, ...responseJson.articles]);
