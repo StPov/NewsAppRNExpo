@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import {
   AppRegistry,
-  StyleSheet,
-  Dimensions,
   View,
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import { FocusScrollView } from "react-native-focus-scroll";
-import Channel from "../services/models/Channel";
+import Channel from "../components/Channel";
+import { FlatList } from "react-native-gesture-handler";
 
 export default class SourcesScreen extends Component {
   constructor(props) {
@@ -38,6 +36,18 @@ export default class SourcesScreen extends Component {
       });
   }
 
+  FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#000",
+        }}
+      />
+    );
+  };
+
   render() {
     const { navigation } = this.props;
     if (this.state.isLoading) {
@@ -49,35 +59,30 @@ export default class SourcesScreen extends Component {
     } else {
       let channels = this.state.dataSource.sources;
       return (
-        <View style={styles.container}>
-          <FocusScrollView threshold={dim.width / 3}>
-            {channels.map((channel, index) => (
+        <View>
+          <FlatList
+            data={channels}
+            ItemSeparatorComponent={this.FlatListItemSeparator}
+            renderItem={(itemData) => (
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("SourceDetails", {
-                    source: channel
+                    source: itemData.item,
                   })
                 }
-                key={index}
               >
                 <Channel
-                  key={index}
-                  name={channel.name}
-                  description={channel.description}
+                  name={itemData.item.name}
+                  description={itemData.item.description}
                   // image={`../../assets/images/channels_background/news${Math.floor(Math.random()*10)}.jpg`}
                 />
               </TouchableOpacity>
-            ))}
-          </FocusScrollView>
+            )}
+          />
         </View>
       );
     }
   }
 }
-
-const dim = Dimensions.get("screen");
-const styles = StyleSheet.create({
-  container: {},
-});
 
 AppRegistry.registerComponent("example", () => SourcesScreen);

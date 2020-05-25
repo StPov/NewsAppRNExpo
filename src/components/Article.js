@@ -13,22 +13,56 @@ export default class Article extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      savedArticles: []
+      savedArticles: [],
     };
   }
   saveArticle = async (newsItem) => {
     try {
-      this.setState({savedArticles: [...this.state.savedArticles, newsItem]})
-      // this.setState({savedArticles: this.state.savedArticles.push(newsItem)})
-      await AsyncStorage.setItem(
-        'array',
-        JSON.stringify(this.state.savedArticles)
-      );
-      console.log("Success")
-      // console.log(newsItem)
+      const value = await AsyncStorage.getItem("array");
+      if (value !== null) {
+        this.setState({ savedArticles: JSON.parse(value) });
+
+        try {
+          this.setState({
+            savedArticles: [...this.state.savedArticles, newsItem],
+          });
+          await AsyncStorage.setItem(
+            "array",
+            JSON.stringify(this.state.savedArticles)
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      }
     } catch (error) {
-      console.log("Failure")
-      console.log(error)
+      // Error retrieving data
+      console.log("Retrieving error");
+    }
+  };
+
+  deleteArticle = async (newsItem) => {
+    try {
+      const value = await AsyncStorage.getItem("array");
+      if (value !== null) {
+        this.setState({ savedArticles: JSON.parse(value) });
+
+        try {
+          this.setState({
+            savedArticles: this.state.savedArticles.filter(
+              (item) => item.url !== newsItem.url
+            ),
+          });
+          await AsyncStorage.setItem(
+            "array",
+            JSON.stringify(this.state.savedArticles)
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } catch (error) {
+      // Error retrieving data
+      console.log("Retrieving error");
     }
   };
 
@@ -58,12 +92,18 @@ export default class Article extends React.Component {
               {
                 text: "Сохранить",
                 onPress: () => {
-                    this.saveArticle(this.props.article)
+                  this.saveArticle(this.props.article);
+                },
+              },
+              {
+                text: "Удалить",
+                onPress: () => {
+                  // this.saveArticle(this.props.article);
+                  this.deleteArticle(this.props.article);
                 },
               },
               {
                 text: "Отмена",
-                // onPress: () => console.log("Нажата отмена"),
                 style: "cancel",
               },
             ],
